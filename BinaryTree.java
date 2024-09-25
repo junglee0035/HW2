@@ -221,9 +221,18 @@ public class BinaryTree {
      */
 
     private void replaceValueHelper(Node node, int oldVal, int newVal) {
+        if (node == null) {
+            return;
+        }
 
-        // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
-        // BINARY TREE (WHICH IS BASED ON RECURSION)
+        //Replace the node's data if it matches oldVal
+        if (node.data == oldVal) {
+            node.data = newVal;
+        }
+
+        //Recursively traverse the left and right subtrees
+        replaceValueHelper(node.left, oldVal, newVal);
+        replaceValueHelper(node.right, oldVal, newVal);
 
     }
 
@@ -243,14 +252,16 @@ public class BinaryTree {
      */
 
     private int findMinHelper(Node node) {
+        if (node == null) {
+            return Integer.MAX_VALUE;
+        }
 
-        // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
-        // BINARY TREE (WHICH IS BASED ON RECURSION)
+        //Get minimum value between current node and its
+        int leftMin = findMinHelper(node.left);
+        int rightMin = findMinHelper(node.right);
 
-        return Integer.MAX_VALUE;
+        return Math.min(node.data, Math.min(leftMin, rightMin));
     }
-
-
     /*
      * private method nodeGTHelper()
      *
@@ -265,14 +276,17 @@ public class BinaryTree {
      */
 
     private int nodesGTHelper(Node node, int val) {
+        if (node == null) {
+            return 0;
+        }
+        // Count current node if its data is greater than 'val'
+        int count = (node.data > val) ? 1 : 0;
 
-        // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
-        // BINARY TREE (WHICH IS BASED ON RECURSION)
+        // Recursively traverse left and right subtrees and add counts
+        count += nodesGTHelper(node.left, val);
+        count += nodesGTHelper(node.right, val);
 
-        // return -1; // RECALL, IF TREE IS EMPTY, RETURN -1
-
-
-        return -1;
+        return count;
     }
 
 
@@ -302,15 +316,19 @@ public class BinaryTree {
         return (double) sumAndCount[0] / sumAndCount[1];
     }
 
-    private int[] averageHelper(Node n) {
+    private int[] averageHelper(Node node) {
+        if (node == null) {
+            return new int[]{0, 0};  // {sum, count}
+        }
 
-        // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
-        // BINARY TREE (WHICH IS BASED ON RECURSION)
+        // Recursively get the sum and count of left and right subtrees
+        int[] left = averageHelper(node.left);
+        int[] right = averageHelper(node.right);
 
-        // RECALL, IF THE TREE IS EMPTY, RETURN 0 FOR BOTH THE SUM AND
-        // COUNT LOCATIONS IN THE RETURNED ARRAY AS SHOWN BELOW, ELSE
-        // THE 'SUM' IS RETURNED IN INDEX LOCATION 0, AND COUNT IS LOCATION 1
+        // Combine results: sum of current node + left + right
+        int sum = node.data + left[0] + right[0];
+        int count = 1 + left[1] + right[1];
 
-        return new int[]{0, 0};
+        return new int[]{sum, count};
     }
 }
